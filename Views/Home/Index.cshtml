@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div id='clock'>Тут будет текущее время</div>
+<br>
+<canvas height='480' width='480' id='myCanvas'></canvas>
+@using (Html.BeginForm("Index", "Home", FormMethod.Get))
+{
+    @Html.DropDownList("Zones", ViewBag.Zones as SelectList)
+    <input type="submit" value="Отправить" />
+    @Html.Hidden("current", ViewData["current"])
+}
+@section Scripts {
+    @Scripts.Render("~/scripts/validate.min.js")
+    @Scripts.Render("~/scripts/clock.js")
+}

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analog", "Analog.csproj", "{D99DE70D-8E21-4D79-81B1-B34B1E5525DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D99DE70D-8E21-4D79-81B1-B34B1E5525DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D99DE70D-8E21-4D79-81B1-B34B1E5525DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D99DE70D-8E21-4D79-81B1-B34B1E5525DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D99DE70D-8E21-4D79-81B1-B34B1E5525DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5691E82-3601-4E8F-B274-E7D3D4035A56}
+	EndGlobalSection
+EndGlobal
