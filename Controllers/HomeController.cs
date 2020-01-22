@@ -7,14 +7,12 @@ namespace Analog.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(string Zones)
+        public ActionResult Index()
         {
-            var selected = (Zones == null) ? TimeZoneInfo.Local.Id : HttpUtility.HtmlDecode(Zones);
-            ViewData["current"] = selected;
             ViewBag.Zones = TimeZoneInfo.GetSystemTimeZones().Select(z=>new SelectListItem() { 
                 Value=z.Id,
                 Text=z.DisplayName,
-                Selected=z.Id.Equals(selected)
+                Selected=z.Id.Equals(TimeZoneInfo.Local.Id)
             });
             return View();
         }
