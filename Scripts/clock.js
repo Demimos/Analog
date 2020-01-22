@@ -1,6 +1,7 @@
 ﻿
-function displayCanvas() {
-    var currentTimeZone = document.getElementById('Zones');
+function displayCanvas(date) {
+    var d = new Date(date[0], date[1], date[2], date[3], date[4], date[5], date[6]); //Получаем экземпляр даты
+    document.getElementById("date").innerHTML = d.toLocaleDateString(); //уточняем какая дата
     var canvasHTML = document.getElementById('myCanvas');
     var contextHTML = canvasHTML.getContext('2d');
     contextHTML.strokeRect(0, 0, canvasHTML.width, canvasHTML.height);
@@ -37,7 +38,14 @@ function displayCanvas() {
     }
 
     //Оцифровка циферблата часов
-    for (var th = 1; th <= 12; th++) {
+    var start = 1;
+    var stop = 12;
+    //циферблат 1-12 или 13-24
+    if (date[3] >= 12) {
+        start = 13;
+        stop = 24;
+    }
+    for (var th = start; th <= stop; th++) {
         contextHTML.beginPath();
         contextHTML.font = 'bold 25px sans-serif';
         var xText = xCenterClock + (radiusNum - 30) * Math.cos(-30 * th * (Math.PI / 180) + Math.PI / 2);
@@ -56,7 +64,7 @@ function displayCanvas() {
     var lengthSeconds = radiusNum - 10;
     var lengthMinutes = radiusNum - 15;
     var lengthHour = lengthMinutes / 1.5;
-    var d = new Date();                //Получаем экземпляр даты
+    
     var t_sec = 6 * d.getSeconds();                           //Определяем угол для секунд
     var t_min = 6 * (d.getMinutes() + (1 / 60) * d.getSeconds()); //Определяем угол для минут
     var t_hour = 30 * (d.getHours() + (1 / 60) * d.getMinutes()); //Определяем угол для часов
@@ -101,46 +109,28 @@ function displayCanvas() {
 
     return;
 }
-function executeSoap(successHandler) {
-    var wsUrl = "~/Controllers/TimeService.asmx";
-
-    var soapRequest =
-
-        '<? xml version = "1.0" encoding = "utf-8" ?>'+
-            '<soap: Envelope xmlns: xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns: xsd="http://www.w3.org/2001/XMLSchema" xmlns: soap="http://schemas.xmlsoap.org/soap/envelope/">'+
-                '<soap: Body>'+
-        '<GetTime xmlns="http://tempuri.org/">'+
-                '<zone>'+document.getElementById("current").innerHTML+'</zone>'+
-                '</GetTime>'+
-            '</soap: Body >'+
-        '</soap: Envelope >';
-    alert(soapRequest);
+function getTime(zone) {
     $.ajax({
         type: "POST",
-        url: wsUrl,
-        contentType: "text/xml",
-        dataType: "xml",
-        data: soapRequest,
-        success: successHandler,
-        error: processError
+        contentType: "application/json; charset=utf-8",
+        url: "../Controllers/TimeService.asmx/GetTime",
+        data: '{"zone":"'+zone+'"}',
+        dataType: "json",
+        success: function (d) {
+            //           alert(JSON.stringify(data));
+            displayCanvas(JSON.parse(d.d));
+           
+        },
+        error: function (data) {
+            alert("error" + JSON.stringify(data))
+        }
     });
-}
-function processSuccess(data, status, req) {
-
-    alert("ok"+data);
-}
-function processError(first,status, req) {
-
-    alert("error"+first+status+req);
 }
 
 window.setInterval(
     function () {
-        var d = new Date();
-
- 
-        //document.getElementById("clock").innerHTML = d.toLocaleTimeString();
-        executeSoap(processSuccess);
-        displayCanvas();
+        var dropdown = document.getElementById("Zones");
+        var zone = dropdown.options[dropdown.selectedIndex].value;
+        getTime(zone);
     }
     , 1000);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,11 +19,20 @@ namespace Analog.Controllers
     {
 
         [WebMethod]
-        public int[] GetTime(string zone)
+        public string GetTime(string zone)
         {
-            var offset = TimeZoneInfo.GetSystemTimeZones().First(z => z.Id == zone).BaseUtcOffset;
-            var d = DateTime.UtcNow.AddHours(offset.Hours).AddMinutes(offset.Minutes);
-            return new int[] { d.Hour, d.Minute, d.Second };
+            DateTime d;
+            if (zone ==null)
+                d = DateTime.Now;
+            else
+            {
+                var tzone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(z => z.Id == zone);
+                if (tzone==null)
+                    d = DateTime.Now;
+                else
+                    d = DateTime.UtcNow.AddHours(tzone.BaseUtcOffset.Hours).AddMinutes(tzone.BaseUtcOffset.Minutes);
+            }
+            return JsonConvert.SerializeObject(new int[] { d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond});
         }
     }
 }
